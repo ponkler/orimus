@@ -5,24 +5,26 @@ using System.Linq;
 
 public partial class Main : Node2D
 {
-    private TextureRect VisLayer;
-    private NoiseTexture2D NoiseTexture;
-    private FastNoiseLite Noise;
+	private Camera2D Camera;
+	private Player Player;
+	private List<Node2D> visSources;
 
-    private List<Node2D> visSources;
-    private RandomNumberGenerator rng = new RandomNumberGenerator();
-    public override void _Ready()
-    {
-        VisLayer = GetNode<TextureRect>("VisibilityLayer");
+	private CpuParticles2D Particles;
 
-        NoiseTexture = (NoiseTexture2D)VisLayer.Texture;
-        Noise = (FastNoiseLite)NoiseTexture.Noise;
+	public override void _Ready()
+	{
+		Camera = GetNode<Camera2D>("Camera");
+		Player = GetNode<Player>("Player");
 
-        visSources = GetTree().GetNodesInGroup("VisSource").Select(node => (Node2D)node).ToList();
-    }
+		Particles = GetNode<CpuParticles2D>("WorldParticles");
 
-    public override void _Process(double delta)
-    {
-        Noise.Offset += new Vector3(0.0f, 0.0f, (float)delta * 5.0f);
-    }
+		visSources = GetTree().GetNodesInGroup("VisSource").Select(node => (Node2D)node).ToList();
+	}
+
+	public override void _PhysicsProcess(double delta)
+	{
+		Camera.GlobalPosition = Player.PivotPoint.Lerp(GetGlobalMousePosition(), 0.3f);
+
+		Particles.GlobalPosition = Camera.GlobalPosition;
+	}
 }

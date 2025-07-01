@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://b7h6nffs7thls"]
+[gd_scene load_steps=20 format=3 uid="uid://b7h6nffs7thls"]
 
 [ext_resource type="Shader" uid="uid://cej5ni3xhgnh1" path="res://Shaders/ascii.gdshader" id="1_jjgbg"]
 [ext_resource type="Script" uid="uid://bmjquw3d72mbw" path="res://Scripts/Main.cs" id="1_jjvhh"]
@@ -38,6 +38,28 @@ fill_from = Vector2(0.5, 0.5)
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
+[sub_resource type="Gradient" id="Gradient_kry3j"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(1, 0.262745, 0.45098, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_21xkr"]
+gradient = SubResource("Gradient_kry3j")
+width = 1
+
+[sub_resource type="Curve" id="Curve_6bp64"]
+_limits = [-360.0, 360.0, 0.0, 1.0]
+_data = [Vector2(0, 83.2696), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_344ge"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.501341, 1), 0.0414888, 0.0414888, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_21xkr"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.253654), 0.0, 0.0, 0, 0]
+point_count = 2
+
 [sub_resource type="ViewportTexture" id="ViewportTexture_bo1nx"]
 viewport_path = NodePath("AsciiRenderer/Viewport")
 
@@ -54,49 +76,6 @@ shader_parameter/virtual_resolution = Vector2(1152, 648)
 [sub_resource type="ViewportTexture" id="ViewportTexture_7u77a"]
 viewport_path = NodePath("AsciiRenderer/Viewport")
 
-[sub_resource type="Gradient" id="Gradient_kry3j"]
-offsets = PackedFloat32Array(0)
-colors = PackedColorArray(1, 0.262745, 0.45098, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_21xkr"]
-gradient = SubResource("Gradient_kry3j")
-width = 1
-
-[sub_resource type="Curve" id="Curve_21xkr"]
-_limits = [-1.0, 1.0, 0.0, 1.0]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.253654), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_6bp64"]
-width = 32
-texture_mode = 1
-curve = SubResource("Curve_21xkr")
-
-[sub_resource type="Curve" id="Curve_344ge"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.501341, 1), 0.0414888, 0.0414888, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_ynf5e"]
-curve = SubResource("Curve_344ge")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6bp64"]
-lifetime_randomness = 1.0
-particle_flag_disable_z = true
-emission_shape = 3
-emission_box_extents = Vector3(1152, 648, 1)
-direction = Vector3(0, 0, 0)
-spread = 180.0
-initial_velocity_min = 5.46
-initial_velocity_max = 38.05
-gravity = Vector3(0, 0, 0)
-scale_max = 2.0
-scale_curve = SubResource("CurveTexture_ynf5e")
-hue_variation_min = -2.23517e-08
-hue_variation_max = 0.15
-hue_variation_curve = SubResource("CurveTexture_6bp64")
-turbulence_enabled = true
-turbulence_noise_speed = Vector3(0, 1, 0)
-
 [node name="Main" type="Node2D"]
 script = ExtResource("1_jjvhh")
 
@@ -109,9 +88,6 @@ offset_top = -2200.0
 offset_right = 3050.0
 offset_bottom = 2800.0
 color = Color(0.0941176, 0.0666667, 0.101961, 1)
-
-[node name="CharacterBody2D" parent="." instance=ExtResource("5_kry3j")]
-position = Vector2(563, 311)
 
 [node name="AsciiRenderer" type="SubViewportContainer" parent="."]
 clip_children = 1
@@ -139,7 +115,6 @@ light_mask = 2
 visibility_layer = 2
 
 [node name="TextureRect" type="TextureRect" parent="AsciiRenderer/Viewport/EnemyContainer"]
-visible = false
 light_mask = 0
 visibility_layer = 2
 offset_left = 248.0
@@ -162,6 +137,9 @@ scale_amount_curve = SubResource("Curve_kry3j")
 position = Vector2(16, 16)
 VisRadius = 32.0
 
+[node name="Player" parent="." instance=ExtResource("5_kry3j")]
+position = Vector2(563, 311)
+
 [node name="VisRenderer" type="SubViewportContainer" parent="."]
 light_mask = 2
 visibility_layer = 2
@@ -181,6 +159,29 @@ canvas_cull_mask = 4293918722
 size = Vector2i(1152, 648)
 render_target_update_mode = 4
 
+[node name="WorldParticles" type="CPUParticles2D" parent="."]
+position = Vector2(576, 324)
+amount = 512
+texture = SubResource("GradientTexture1D_21xkr")
+lifetime = 12.0
+lifetime_randomness = 0.5
+fixed_fps = 60
+draw_order = 1
+emission_shape = 3
+emission_rect_extents = Vector2(1152, 648)
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 5.0
+initial_velocity_max = 10.0
+angle_min = -3.99999
+angle_max = 4.00001
+angle_curve = SubResource("Curve_6bp64")
+scale_amount_max = 3.0
+scale_amount_curve = SubResource("Curve_344ge")
+hue_variation_max = 0.15
+hue_variation_curve = SubResource("Curve_21xkr")
+
 [node name="AsciiLayer" type="TextureRect" parent="."]
 light_mask = 2
 visibility_layer = 2
@@ -194,13 +195,6 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("ViewportTexture_7u77a")
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-position = Vector2(576, 324)
-amount = 1024
-texture = SubResource("GradientTexture1D_21xkr")
-lifetime = 12.0
-process_material = SubResource("ParticleProcessMaterial_6bp64")
-
 [node name="VisLayer" type="ColorRect" parent="."]
 visible = false
 visibility_layer = 2
@@ -211,3 +205,7 @@ offset_right = 1152.0
 offset_bottom = 648.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Camera" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+position_smoothing_speed = 3.0

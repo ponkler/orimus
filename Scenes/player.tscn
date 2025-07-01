@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://d1ltwd8gct1x8" path="res://Sprites/tracks_backward.png" id="2_3smsa"]
 [ext_resource type="PackedScene" uid="uid://c3f52sg2u4kmn" path="res://Scenes/vis_source.tscn" id="2_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://db5s3mbxo3c12" path="res://Sprites/body.png" id="2_fkybt"]
-[ext_resource type="Texture2D" uid="uid://0urgo6l517wp" path="res://Sprites/tracks.png" id="2_x3wgy"]
+[ext_resource type="Texture2D" uid="uid://jabjni7bhw0a" path="res://Sprites/tracks_forward.png" id="3_3smsa"]
 [ext_resource type="Texture2D" uid="uid://b0dotsxd5unu8" path="res://Sprites/rifle.png" id="3_x3wgy"]
 [ext_resource type="Texture2D" uid="uid://dlvaw7jxj72ym" path="res://Sprites/lamp.png" id="4_3smsa"]
 
@@ -16,12 +16,12 @@ region = Rect2(0, 0, 9, 27)
 atlas = ExtResource("2_3smsa")
 region = Rect2(9, 0, 9, 27)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_3smsa"]
-atlas = ExtResource("2_x3wgy")
+[sub_resource type="AtlasTexture" id="AtlasTexture_8erm5"]
+atlas = ExtResource("3_3smsa")
 region = Rect2(0, 0, 9, 27)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_8erm5"]
-atlas = ExtResource("2_x3wgy")
+[sub_resource type="AtlasTexture" id="AtlasTexture_gymyn"]
+atlas = ExtResource("3_3smsa")
 region = Rect2(9, 0, 9, 27)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_f1ek2"]
@@ -39,10 +39,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_3smsa")
+"texture": SubResource("AtlasTexture_8erm5")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_8erm5")
+"texture": SubResource("AtlasTexture_gymyn")
 }],
 "loop": true,
 "name": &"forward",
@@ -63,7 +63,7 @@ position = Vector2(13, 14)
 [node name="LeftTrack" type="AnimatedSprite2D" parent="Lower"]
 position = Vector2(4, -14)
 sprite_frames = SubResource("SpriteFrames_f1ek2")
-animation = &"forward"
+animation = &"backward"
 centered = false
 
 [node name="RightTrack" type="AnimatedSprite2D" parent="Lower"]
@@ -116,8 +116,3 @@ VisRadius = 32.0
 HasArc = true
 ArcWidth = 45.0
 ArcRadius = 128.0
-
-[node name="Camera" type="Camera2D" parent="."]
-position = Vector2(13, 13)
-position_smoothing_enabled = true
-position_smoothing_speed = 3.0

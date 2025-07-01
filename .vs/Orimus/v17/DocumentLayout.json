@@ -1,7 +1,11 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\GodotSharp\\orimus\\",
+  "WorkspaceRootPath": "C:\\GodotSharp\\Orimus\\",
   "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B0B1491C-0122-49B4-8338-8819362C622F}|Orimus.csproj|c:\\godotsharp\\orimus\\scripts\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0B1491C-0122-49B4-8338-8819362C622F}|Orimus.csproj|solutionrelative:scripts\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
     {
       "AbsoluteMoniker": "D:0:0:{B0B1491C-0122-49B4-8338-8819362C622F}|Orimus.csproj|c:\\godotsharp\\orimus\\scripts\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B0B1491C-0122-49B4-8338-8819362C622F}|Orimus.csproj|solutionrelative:scripts\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
@@ -9,10 +13,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{B0B1491C-0122-49B4-8338-8819362C622F}|Orimus.csproj|c:\\godotsharp\\orimus\\scripts\\vissource.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B0B1491C-0122-49B4-8338-8819362C622F}|Orimus.csproj|solutionrelative:scripts\\vissource.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B0B1491C-0122-49B4-8338-8819362C622F}|Orimus.csproj|c:\\godotsharp\\orimus\\scripts\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B0B1491C-0122-49B4-8338-8819362C622F}|Orimus.csproj|solutionrelative:scripts\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 2577,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,23 +30,24 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "Player.cs",
-              "DocumentMoniker": "C:\\GodotSharp\\orimus\\Scripts\\Player.cs",
+              "DocumentMoniker": "C:\\GodotSharp\\Orimus\\Scripts\\Player.cs",
               "RelativeDocumentMoniker": "Scripts\\Player.cs",
-              "ToolTip": "C:\\GodotSharp\\orimus\\Scripts\\Player.cs",
+              "ToolTip": "C:\\GodotSharp\\Orimus\\Scripts\\Player.cs",
               "RelativeToolTip": "Scripts\\Player.cs",
-              "ViewState": "AgIAAHoAAAAAAAAAAAAIwI8AAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-23T19:06:01.966Z"
+              "WhenOpened": "2025-06-23T19:06:01.966Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "VisSource.cs",
-              "DocumentMoniker": "C:\\GodotSharp\\orimus\\Scripts\\VisSource.cs",
+              "DocumentMoniker": "C:\\GodotSharp\\Orimus\\Scripts\\VisSource.cs",
               "RelativeDocumentMoniker": "Scripts\\VisSource.cs",
-              "ToolTip": "C:\\GodotSharp\\orimus\\Scripts\\VisSource.cs",
+              "ToolTip": "C:\\GodotSharp\\Orimus\\Scripts\\VisSource.cs",
               "RelativeToolTip": "Scripts\\VisSource.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAABOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -54,13 +55,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Main.cs",
-              "DocumentMoniker": "C:\\GodotSharp\\orimus\\Scripts\\Main.cs",
+              "DocumentMoniker": "C:\\GodotSharp\\Orimus\\Scripts\\Main.cs",
               "RelativeDocumentMoniker": "Scripts\\Main.cs",
-              "ToolTip": "C:\\GodotSharp\\orimus\\Scripts\\Main.cs",
+              "ToolTip": "C:\\GodotSharp\\Orimus\\Scripts\\Main.cs",
               "RelativeToolTip": "Scripts\\Main.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAABDAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAABkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-22T15:36:36.022Z",
               "EditorCaption": ""
