@@ -1,0 +1,73 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\GodotSharp\\orimus\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B0B1491C-0122-49B4-8338-8819362C622F}|Orimus.csproj|c:\\godotsharp\\orimus\\scripts\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0B1491C-0122-49B4-8338-8819362C622F}|Orimus.csproj|solutionrelative:scripts\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0B1491C-0122-49B4-8338-8819362C622F}|Orimus.csproj|c:\\godotsharp\\orimus\\scripts\\vissource.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0B1491C-0122-49B4-8338-8819362C622F}|Orimus.csproj|solutionrelative:scripts\\vissource.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0B1491C-0122-49B4-8338-8819362C622F}|Orimus.csproj|c:\\godotsharp\\orimus\\scripts\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0B1491C-0122-49B4-8338-8819362C622F}|Orimus.csproj|solutionrelative:scripts\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 2577,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Player.cs",
+              "DocumentMoniker": "C:\\GodotSharp\\orimus\\Scripts\\Player.cs",
+              "RelativeDocumentMoniker": "Scripts\\Player.cs",
+              "ToolTip": "C:\\GodotSharp\\orimus\\Scripts\\Player.cs",
+              "RelativeToolTip": "Scripts\\Player.cs",
+              "ViewState": "AgIAAHoAAAAAAAAAAAAIwI8AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-23T19:06:01.966Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "VisSource.cs",
+              "DocumentMoniker": "C:\\GodotSharp\\orimus\\Scripts\\VisSource.cs",
+              "RelativeDocumentMoniker": "Scripts\\VisSource.cs",
+              "ToolTip": "C:\\GodotSharp\\orimus\\Scripts\\VisSource.cs",
+              "RelativeToolTip": "Scripts\\VisSource.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAABOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-23T02:44:48.508Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Main.cs",
+              "DocumentMoniker": "C:\\GodotSharp\\orimus\\Scripts\\Main.cs",
+              "RelativeDocumentMoniker": "Scripts\\Main.cs",
+              "ToolTip": "C:\\GodotSharp\\orimus\\Scripts\\Main.cs",
+              "RelativeToolTip": "Scripts\\Main.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAABDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T15:36:36.022Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

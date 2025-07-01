@@ -1,0 +1,213 @@
+[gd_scene load_steps=22 format=3 uid="uid://b7h6nffs7thls"]
+
+[ext_resource type="Shader" uid="uid://cej5ni3xhgnh1" path="res://Shaders/ascii.gdshader" id="1_jjgbg"]
+[ext_resource type="Script" uid="uid://bmjquw3d72mbw" path="res://Scripts/Main.cs" id="1_jjvhh"]
+[ext_resource type="Texture2D" uid="uid://3kxdyomv1ant" path="res://Sprites/ascii.png" id="2_bo1nx"]
+[ext_resource type="PackedScene" uid="uid://c3f52sg2u4kmn" path="res://Scenes/vis_source.tscn" id="3_6bp64"]
+[ext_resource type="PackedScene" uid="uid://c8fnhdua6b0hh" path="res://Scenes/player.tscn" id="5_kry3j"]
+
+[sub_resource type="Environment" id="Environment_kry3j"]
+background_mode = 3
+glow_enabled = true
+glow_normalized = true
+glow_intensity = 1.0
+glow_bloom = 0.1
+glow_blend_mode = 0
+
+[sub_resource type="Gradient" id="Gradient_bo1nx"]
+offsets = PackedFloat32Array(0.253197, 0.708397)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_8gbba"]
+gradient = SubResource("Gradient_bo1nx")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_8gbba"]
+offsets = PackedFloat32Array(0, 0.551145)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_jjvhh"]
+gradient = SubResource("Gradient_8gbba")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Curve" id="Curve_kry3j"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_bo1nx"]
+viewport_path = NodePath("AsciiRenderer/Viewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jjgbg"]
+resource_local_to_scene = true
+shader = ExtResource("1_jjgbg")
+shader_parameter/source_texture = SubResource("ViewportTexture_bo1nx")
+shader_parameter/ascii_font = ExtResource("2_bo1nx")
+shader_parameter/char_width = 6.0
+shader_parameter/char_height = 8.0
+shader_parameter/char_count = 16.0
+shader_parameter/virtual_resolution = Vector2(1152, 648)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_7u77a"]
+viewport_path = NodePath("AsciiRenderer/Viewport")
+
+[sub_resource type="Gradient" id="Gradient_kry3j"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(1, 0.262745, 0.45098, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_21xkr"]
+gradient = SubResource("Gradient_kry3j")
+width = 1
+
+[sub_resource type="Curve" id="Curve_21xkr"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.253654), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_6bp64"]
+width = 32
+texture_mode = 1
+curve = SubResource("Curve_21xkr")
+
+[sub_resource type="Curve" id="Curve_344ge"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.501341, 1), 0.0414888, 0.0414888, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_ynf5e"]
+curve = SubResource("Curve_344ge")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6bp64"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(1152, 648, 1)
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 5.46
+initial_velocity_max = 38.05
+gravity = Vector3(0, 0, 0)
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_ynf5e")
+hue_variation_min = -2.23517e-08
+hue_variation_max = 0.15
+hue_variation_curve = SubResource("CurveTexture_6bp64")
+turbulence_enabled = true
+turbulence_noise_speed = Vector3(0, 1, 0)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_jjvhh")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_kry3j")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_left = -1950.0
+offset_top = -2200.0
+offset_right = 3050.0
+offset_bottom = 2800.0
+color = Color(0.0941176, 0.0666667, 0.101961, 1)
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("5_kry3j")]
+position = Vector2(563, 311)
+
+[node name="AsciiRenderer" type="SubViewportContainer" parent="."]
+clip_children = 1
+light_mask = 2
+visibility_layer = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1152.0
+offset_bottom = 648.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Viewport" type="SubViewport" parent="AsciiRenderer"]
+own_world_3d = true
+transparent_bg = true
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+canvas_cull_mask = 4293918722
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="EnemyContainer" type="Node2D" parent="AsciiRenderer/Viewport"]
+light_mask = 2
+visibility_layer = 2
+
+[node name="TextureRect" type="TextureRect" parent="AsciiRenderer/Viewport/EnemyContainer"]
+visible = false
+light_mask = 0
+visibility_layer = 2
+offset_left = 248.0
+offset_top = 329.0
+offset_right = 312.0
+offset_bottom = 393.0
+pivot_offset = Vector2(16, 16)
+texture = SubResource("GradientTexture2D_8gbba")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="AsciiRenderer/Viewport/EnemyContainer/TextureRect"]
+light_mask = 2
+visibility_layer = 2
+position = Vector2(32, 32)
+amount = 64
+texture = SubResource("GradientTexture2D_jjvhh")
+gravity = Vector2(0, 0)
+scale_amount_curve = SubResource("Curve_kry3j")
+
+[node name="VisSource" parent="AsciiRenderer/Viewport/EnemyContainer/TextureRect" instance=ExtResource("3_6bp64")]
+position = Vector2(16, 16)
+VisRadius = 32.0
+
+[node name="VisRenderer" type="SubViewportContainer" parent="."]
+light_mask = 2
+visibility_layer = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1152.0
+offset_bottom = 648.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Viewport" type="SubViewport" parent="VisRenderer"]
+transparent_bg = true
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+canvas_cull_mask = 4293918722
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="AsciiLayer" type="TextureRect" parent="."]
+light_mask = 2
+visibility_layer = 2
+material = SubResource("ShaderMaterial_jjgbg")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1152.0
+offset_bottom = 648.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("ViewportTexture_7u77a")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(576, 324)
+amount = 1024
+texture = SubResource("GradientTexture1D_21xkr")
+lifetime = 12.0
+process_material = SubResource("ParticleProcessMaterial_6bp64")
+
+[node name="VisLayer" type="ColorRect" parent="."]
+visible = false
+visibility_layer = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1152.0
+offset_bottom = 648.0
+grow_horizontal = 2
+grow_vertical = 2
