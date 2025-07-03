@@ -14,25 +14,24 @@ public partial class VisSource : Node2D
     [Export]
     private float ArcRadius;
 
-    public override void _Draw()
+    private Node2D VisGroup;
+    private VisShape VisShape;
+
+    public override void _Ready()
     {
-        if (HasArc)
-        {
-            float arcWidthRad = Mathf.DegToRad(ArcWidth);
-            Vector2 localAimPos = ToLocal(GetGlobalMousePosition());
-            float localAimAngle = Position.AngleTo(localAimPos) + (float.Pi / 4.0f);
-
-            float startAngle = localAimAngle - (arcWidthRad / 2.0f);
-
-            Vector2 startPos = -localAimPos.Normalized() * (VisRadius - 1.0f);
-
-            DrawArc(startPos, ArcRadius, startAngle, startAngle + arcWidthRad, 32, new Color(1.0f, 1.0f, 1.0f, 1.0f), ArcRadius * 2);
-        }
-        DrawCircle(Vector2.Zero, VisRadius, new Color(1.0f, 1.0f, 1.0f, 1.0f));
+        VisGroup = (Node2D)GetTree().GetFirstNodeInGroup("VisShapes");
+        VisShape = new VisShape(VisRadius, HasArc, ArcAngle, ArcWidth, ArcRadius);
+        VisShape.VisibilityLayer = 1 << 1;
+        VisGroup.AddChild(VisShape);
     }
 
     public override void _Process(double delta)
     {
-        QueueRedraw();
+        Vector2 localAimPos = GetLocalMousePosition();
+        float localAimAngle = Position.AngleTo(localAimPos) + (float.Pi / 4.0f);
+        Vector2 startPos = -localAimPos.Normalized() * (VisRadius - 1.0f);
+
+        VisShape.aimAngle = localAimAngle;
+        VisShape.startPos = startPos;
     }
 }

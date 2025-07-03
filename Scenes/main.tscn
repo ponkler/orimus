@@ -1,10 +1,11 @@
-[gd_scene load_steps=19 format=3 uid="uid://b7h6nffs7thls"]
+[gd_scene load_steps=22 format=3 uid="uid://b7h6nffs7thls"]
 
 [ext_resource type="Shader" uid="uid://cej5ni3xhgnh1" path="res://Shaders/ascii.gdshader" id="1_jjgbg"]
 [ext_resource type="Script" uid="uid://bmjquw3d72mbw" path="res://Scripts/Main.cs" id="1_jjvhh"]
 [ext_resource type="Texture2D" uid="uid://3kxdyomv1ant" path="res://Sprites/ascii.png" id="2_bo1nx"]
 [ext_resource type="PackedScene" uid="uid://wgna0xofxdb2" path="res://Scenes/enemy.tscn" id="2_kry3j"]
 [ext_resource type="PackedScene" uid="uid://c8fnhdua6b0hh" path="res://Scenes/player.tscn" id="5_kry3j"]
+[ext_resource type="Shader" uid="uid://bbwc3h7iwy4tq" path="res://Shaders/fogofwar.gdshader" id="6_21xkr"]
 
 [sub_resource type="Environment" id="Environment_kry3j"]
 background_mode = 3
@@ -80,6 +81,14 @@ shader_parameter/char_count = 16.0
 [sub_resource type="ViewportTexture" id="ViewportTexture_7u77a"]
 viewport_path = NodePath("AsciiRenderer/Viewport")
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_21xkr"]
+viewport_path = NodePath("VisRenderer/Viewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6bp64"]
+resource_local_to_scene = true
+shader = ExtResource("6_21xkr")
+shader_parameter/visTexture = SubResource("ViewportTexture_21xkr")
+
 [node name="Main" type="Node2D"]
 script = ExtResource("1_jjvhh")
 
@@ -142,6 +151,7 @@ light_mask = 512
 visibility_layer = 512
 
 [node name="VisRenderer" type="SubViewportContainer" parent="."]
+clip_children = 1
 light_mask = 2
 visibility_layer = 2
 anchors_preset = 15
@@ -153,12 +163,19 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Viewport" type="SubViewport" parent="VisRenderer"]
+own_world_3d = true
 transparent_bg = true
 handle_input_locally = false
 canvas_item_default_texture_filter = 0
 canvas_cull_mask = 4293918722
 size = Vector2i(1152, 648)
 render_target_update_mode = 4
+
+[node name="VisCamera" type="Camera2D" parent="VisRenderer/Viewport"]
+
+[node name="VisShapes" type="Node2D" parent="VisRenderer/Viewport" groups=["VisShapes"]]
+light_mask = 2
+visibility_layer = 2
 
 [node name="AsciiLayer" type="TextureRect" parent="."]
 light_mask = 512
@@ -177,13 +194,15 @@ pivot_offset = Vector2(576, 324)
 texture = SubResource("ViewportTexture_7u77a")
 
 [node name="VisLayer" type="ColorRect" parent="."]
-visible = false
 visibility_layer = 2
+material = SubResource("ShaderMaterial_6bp64")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 1152.0
-offset_bottom = 648.0
+offset_left = -576.0
+offset_top = -324.0
+offset_right = 576.0
+offset_bottom = 324.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.196078, 0.141176, 0.211765, 1)
