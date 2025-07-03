@@ -25,6 +25,7 @@ project/assembly_name="Orimus"
 [global_group]
 
 VisSource="Objects that create a visibility radius"
+EnemyVisuals="Accessor for the enemy visual container in the ASCII render viewport"
 
 [input]
 

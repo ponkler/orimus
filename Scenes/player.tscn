@@ -109,6 +109,7 @@ position = Vector2(13, 13)
 shape = SubResource("CircleShape2D_cvnsp")
 
 [node name="VisSource" parent="." instance=ExtResource("2_cvnsp")]
+visible = false
 light_mask = 2
 visibility_layer = 2
 position = Vector2(13, 13)
