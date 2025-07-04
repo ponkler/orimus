@@ -201,11 +201,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -576.0
 offset_top = -324.0
-offset_right = 576.0
-offset_bottom = 324.0
+offset_right = 1728.0
+offset_bottom = 972.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.196078, 0.141176, 0.211765, 1)
+pivot_offset = Vector2(576, 324)
+color = Color(0.14856, 0.1072, 0.16, 1)
 
 [node name="Camera" type="Camera2D" parent="."]
 position_smoothing_speed = 3.0

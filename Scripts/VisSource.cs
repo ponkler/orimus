@@ -33,5 +33,6 @@ public partial class VisSource : Node2D
 
         VisShape.aimAngle = localAimAngle;
         VisShape.startPos = startPos;
+        VisShape.GlobalPosition = GlobalPosition;
     }
 }

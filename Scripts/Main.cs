@@ -9,6 +9,9 @@ public partial class Main : Node2D
 	private Camera2D AsciiCamera;
 	private TextureRect AsciiLayer;
 
+	private Camera2D VisCamera;
+	private ColorRect VisLayer;
+
 	private Player Player;
 	private List<Node2D> visSources;
 
@@ -20,6 +23,9 @@ public partial class Main : Node2D
 
 		AsciiCamera = GetNode<Camera2D>("AsciiRenderer/Viewport/AsciiCamera");
 		AsciiLayer = GetNode<TextureRect>("AsciiLayer");
+
+		VisCamera = GetNode<Camera2D>("VisRenderer/Viewport/VisCamera");
+		VisLayer = GetNode<ColorRect>("VisLayer");
 
 		Player = GetNode<Player>("World/Player");
 
@@ -35,6 +41,9 @@ public partial class Main : Node2D
 
 		AsciiCamera.GlobalPosition = Camera.GlobalPosition;
 		AsciiLayer.GlobalPosition = Camera.GlobalPosition - AsciiLayer.PivotOffset;
+
+		VisCamera.GlobalPosition = Camera.GlobalPosition;
+        VisLayer.GlobalPosition = Camera.GlobalPosition - AsciiLayer.PivotOffset;
 
         Particles.GlobalPosition = Camera.GlobalPosition;
 	}
