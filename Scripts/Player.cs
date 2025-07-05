@@ -18,6 +18,11 @@ public partial class Player : CharacterBody2D
 	public float LookAngle;
 	public Vector2 PivotPoint;
 
+	public float MaxEnergy = 1000.0f;
+	public float CurrentEnergy = 1000.0f;
+
+	private Node2D EnergyMeters;
+
 	public override void _Ready()
 	{
 		LowerPivot = GetNode<Node2D>("Lower");
@@ -30,6 +35,8 @@ public partial class Player : CharacterBody2D
 
 		GunRaycast = LeftHand.GetNode<RayCast2D>("GunRaycast");
 		TargetBubble = LeftHand.GetNode<Area2D>("TargetBubble");
+
+		EnergyMeters = GetNode<Node2D>("EnergyMeters");
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -46,6 +53,7 @@ public partial class Player : CharacterBody2D
 		RotateUpper();
 		Animate(moveTurnVector);
 		MoveAndSlide();
+		UpdateEnergyMeters();
 		Aim();
 	}
 
@@ -140,6 +148,46 @@ public partial class Player : CharacterBody2D
 			float angle = PivotPoint.AngleToPoint(mousePos);
 			Body.Rotation = angle - (float.Pi / 2);
 			LookAngle = Body.Rotation;
+		}
+
+		foreach (Sprite2D meter in EnergyMeters.GetChildren())
+		{
+			meter.Visible = false;
+		}
+
+		switch (Body.Rotation)
+		{
+			case var _ when (Body.Rotation > float.Pi / 4 || Body.Rotation <= -5 * float.Pi / 4):
+				// FACING LEFT
+				EnergyMeters.GetNode<Sprite2D>("Right").Visible = true;
+				break;
+            case var _ when (Body.Rotation < -5 * float.Pi / 4 || Body.Rotation <= -3 * float.Pi / 4):
+                // FACING UP
+                EnergyMeters.GetNode<Sprite2D>("Bottom").Visible = true;
+                break;
+            case var _ when (Body.Rotation < -3 * float.Pi / 4 || Body.Rotation <= -float.Pi / 4):
+                // FACING RIGHT
+                EnergyMeters.GetNode<Sprite2D>("Left").Visible = true;
+                break;
+            case var _ when (Body.Rotation < -float.Pi / 4 || Body.Rotation <= float.Pi / 4):
+                // FACING DOWN
+                EnergyMeters.GetNode<Sprite2D>("Top").Visible = true;
+                break;
+        }
+	}
+
+	public void UpdateEnergyMeters()
+	{
+		GD.Print(Mathf.Ceil(CurrentEnergy / (MaxEnergy / 10.0f)));
+		foreach (Sprite2D meter in EnergyMeters.GetChildren())
+		{
+			if (CurrentEnergy == MaxEnergy) 
+			{ 
+				meter.Frame = 11;
+				continue;
+			}
+
+			meter.Frame = (int)Mathf.Ceil( CurrentEnergy / (MaxEnergy / 10.0f) );
 		}
 	}
 

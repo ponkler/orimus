@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://c8fnhdua6b0hh"]
+[gd_scene load_steps=19 format=3 uid="uid://c8fnhdua6b0hh"]
 
 [ext_resource type="Script" uid="uid://b43nswgh2jnjh" path="res://Scripts/Player.cs" id="1_6t5aa"]
 [ext_resource type="Texture2D" uid="uid://d1ltwd8gct1x8" path="res://Sprites/tracks_backward.png" id="2_3smsa"]
@@ -7,6 +7,10 @@
 [ext_resource type="Texture2D" uid="uid://jabjni7bhw0a" path="res://Sprites/tracks_forward.png" id="3_3smsa"]
 [ext_resource type="Texture2D" uid="uid://b0dotsxd5unu8" path="res://Sprites/rifle.png" id="3_x3wgy"]
 [ext_resource type="Texture2D" uid="uid://dlvaw7jxj72ym" path="res://Sprites/lamp.png" id="4_3smsa"]
+[ext_resource type="Texture2D" uid="uid://ckmdod7iajf54" path="res://Sprites/MeterStates/meter_left_sheet.png" id="8_gymyn"]
+[ext_resource type="Texture2D" uid="uid://cd3ohc2lhe3t1" path="res://Sprites/MeterStates/meter_top_sheet.png" id="9_pu2lt"]
+[ext_resource type="Texture2D" uid="uid://cnwgkn6anp1tf" path="res://Sprites/MeterStates/meter_right_sheet.png" id="10_ukyrk"]
+[ext_resource type="Texture2D" uid="uid://buk7o40kc6l7w" path="res://Sprites/MeterStates/meter_bottom_sheet.png" id="11_7dp3o"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f1ek2"]
 atlas = ExtResource("2_3smsa")
@@ -116,3 +120,34 @@ VisRadius = 48.0
 HasArc = true
 ArcWidth = 60.0
 ArcRadius = 196.0
+
+[node name="EnergyMeters" type="Node2D" parent="."]
+modulate = Color(1, 1, 1, 0.5)
+
+[node name="Left" type="Sprite2D" parent="EnergyMeters"]
+visible = false
+position = Vector2(-18, 13)
+texture = ExtResource("8_gymyn")
+hframes = 12
+frame = 11
+
+[node name="Top" type="Sprite2D" parent="EnergyMeters"]
+visible = false
+position = Vector2(13, -18)
+texture = ExtResource("9_pu2lt")
+vframes = 12
+frame = 11
+
+[node name="Right" type="Sprite2D" parent="EnergyMeters"]
+visible = false
+position = Vector2(44, 13)
+texture = ExtResource("10_ukyrk")
+hframes = 12
+frame = 11
+
+[node name="Bottom" type="Sprite2D" parent="EnergyMeters"]
+visible = false
+position = Vector2(13, 44)
+texture = ExtResource("11_7dp3o")
+vframes = 12
+frame = 11

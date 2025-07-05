@@ -1,9 +1,8 @@
-[gd_scene load_steps=22 format=3 uid="uid://b7h6nffs7thls"]
+[gd_scene load_steps=21 format=3 uid="uid://b7h6nffs7thls"]
 
 [ext_resource type="Shader" uid="uid://cej5ni3xhgnh1" path="res://Shaders/ascii.gdshader" id="1_jjgbg"]
 [ext_resource type="Script" uid="uid://bmjquw3d72mbw" path="res://Scripts/Main.cs" id="1_jjvhh"]
 [ext_resource type="Texture2D" uid="uid://3kxdyomv1ant" path="res://Sprites/ascii.png" id="2_bo1nx"]
-[ext_resource type="PackedScene" uid="uid://wgna0xofxdb2" path="res://Scenes/enemy.tscn" id="2_kry3j"]
 [ext_resource type="PackedScene" uid="uid://c8fnhdua6b0hh" path="res://Scenes/player.tscn" id="5_kry3j"]
 [ext_resource type="Shader" uid="uid://bbwc3h7iwy4tq" path="res://Shaders/fogofwar.gdshader" id="6_21xkr"]
 
@@ -105,11 +104,6 @@ color = Color(0.0941176, 0.0666667, 0.101961, 1)
 [node name="World" type="Node2D" parent="."]
 
 [node name="Enemies" type="Node2D" parent="World"]
-
-[node name="Enemy" parent="World/Enemies" instance=ExtResource("2_kry3j")]
-position = Vector2(576, 324)
-collision_layer = 2
-collision_mask = 2
 
 [node name="Player" parent="World" instance=ExtResource("5_kry3j")]
 position = Vector2(563, 311)

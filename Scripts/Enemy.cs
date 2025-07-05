@@ -15,6 +15,9 @@ public partial class Enemy : CharacterBody2D
     private PackedScene VisualScene = ResourceLoader.Load<PackedScene>("res://Scenes/enemy_visual.tscn");
     public Node2D Visual;
 
+    public int MaxHealth;
+    public int CurrentHealth;
+
     public override void _Ready()
     {
         VisualsGroup = (Node2D)GetTree().GetFirstNodeInGroup("EnemyVisuals");
@@ -25,5 +28,10 @@ public partial class Enemy : CharacterBody2D
     public override void _PhysicsProcess(double delta)
     {
         Visual.GlobalPosition = GlobalPosition;
+    }
+
+    public void TakeDamage(int damage)
+    {
+
     }
 }
