@@ -1,12 +1,11 @@
-[gd_scene load_steps=19 format=3 uid="uid://c8fnhdua6b0hh"]
+[gd_scene load_steps=17 format=3 uid="uid://c8fnhdua6b0hh"]
 
-[ext_resource type="Script" uid="uid://b43nswgh2jnjh" path="res://Scripts/Player.cs" id="1_6t5aa"]
+[ext_resource type="Script" uid="uid://b1say0homcn53" path="res://Scripts/Characters/Player/Player.cs" id="1_6t5aa"]
 [ext_resource type="Texture2D" uid="uid://d1ltwd8gct1x8" path="res://Sprites/tracks_backward.png" id="2_3smsa"]
 [ext_resource type="PackedScene" uid="uid://c3f52sg2u4kmn" path="res://Scenes/vis_source.tscn" id="2_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://db5s3mbxo3c12" path="res://Sprites/body.png" id="2_fkybt"]
 [ext_resource type="Texture2D" uid="uid://jabjni7bhw0a" path="res://Sprites/tracks_forward.png" id="3_3smsa"]
-[ext_resource type="Texture2D" uid="uid://b0dotsxd5unu8" path="res://Sprites/rifle.png" id="3_x3wgy"]
-[ext_resource type="Texture2D" uid="uid://dlvaw7jxj72ym" path="res://Sprites/lamp.png" id="4_3smsa"]
+[ext_resource type="PackedScene" uid="uid://0f1f0nhs14ad" path="res://Scenes/auto_rifle.tscn" id="6_gymyn"]
 [ext_resource type="Texture2D" uid="uid://ckmdod7iajf54" path="res://Sprites/MeterStates/meter_left_sheet.png" id="8_gymyn"]
 [ext_resource type="Texture2D" uid="uid://cd3ohc2lhe3t1" path="res://Sprites/MeterStates/meter_top_sheet.png" id="9_pu2lt"]
 [ext_resource type="Texture2D" uid="uid://cnwgkn6anp1tf" path="res://Sprites/MeterStates/meter_right_sheet.png" id="10_ukyrk"]
@@ -53,12 +52,11 @@ animations = [{
 "speed": 6.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_3smsa"]
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_cvnsp"]
 radius = 6.0
 
 [node name="Player" type="CharacterBody2D"]
+z_index = 1
 script = ExtResource("1_6t5aa")
 
 [node name="Lower" type="Node2D" parent="."]
@@ -76,37 +74,18 @@ sprite_frames = SubResource("SpriteFrames_f1ek2")
 animation = &"forward"
 centered = false
 
-[node name="Body" type="TextureRect" parent="."]
-offset_left = 3.0
-offset_top = 5.0
-offset_right = 23.0
-offset_bottom = 19.0
-pivot_offset = Vector2(10, 9)
+[node name="Body" type="Sprite2D" parent="."]
+position = Vector2(13, 13)
 texture = ExtResource("2_fkybt")
 
-[node name="Left" type="TextureRect" parent="Body"]
-layout_mode = 0
-offset_left = 15.0
-offset_top = 11.0
-offset_right = 19.0
-offset_bottom = 22.0
-texture = ExtResource("3_x3wgy")
+[node name="Right" type="Node2D" parent="Body"]
+position = Vector2(-9, 4)
 
-[node name="GunRaycast" type="RayCast2D" parent="Body/Left"]
-position = Vector2(2, 11)
+[node name="Left" type="Node2D" parent="Body"]
+position = Vector2(5, 4)
 
-[node name="TargetBubble" type="Area2D" parent="Body/Left"]
-position = Vector2(-5, -3)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Body/Left/TargetBubble"]
-shape = SubResource("CircleShape2D_3smsa")
-
-[node name="Right" type="TextureRect" parent="Body"]
-layout_mode = 0
-offset_top = 10.0
-offset_right = 6.0
-offset_bottom = 16.0
-texture = ExtResource("4_3smsa")
+[node name="Autorifle" parent="Body/Left" instance=ExtResource("6_gymyn")]
+position = Vector2(2, 5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(13, 13)
@@ -122,7 +101,7 @@ ArcWidth = 60.0
 ArcRadius = 196.0
 
 [node name="EnergyMeters" type="Node2D" parent="."]
-modulate = Color(1, 1, 1, 0.5)
+modulate = Color(1, 1, 1, 0.6)
 
 [node name="Left" type="Sprite2D" parent="EnergyMeters"]
 visible = false

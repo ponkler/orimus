@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://dvl2hfuky0kr4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b57mv"]
+size = Vector2(396, 10)
+
+[sub_resource type="Gradient" id="Gradient_b57mv"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_d155t"]
+gradient = SubResource("Gradient_b57mv")
+
+[sub_resource type="Curve" id="Curve_b57mv"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_d155t"]
+curve = SubResource("Curve_b57mv")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_yjehn"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(1, 0, 0)
+emission_shape = 3
+emission_box_extents = Vector3(200, 0, 0)
+direction = Vector3(0, -1, 0)
+spread = 0.0
+initial_velocity_max = 30.0
+gravity = Vector3(0, 0, 0)
+scale_max = 12.0
+scale_curve = SubResource("CurveTexture_d155t")
+color_ramp = SubResource("GradientTexture1D_d155t")
+
+[node name="StaticBody2D" type="StaticBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5)
+shape = SubResource("RectangleShape2D_b57mv")
+
+[node name="Wall" type="GPUParticles2D" parent="."]
+modulate = Color(0, 0.966667, 1, 1)
+light_mask = 513
+visibility_layer = 513
+amount = 2048
+lifetime = 8.0
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_yjehn")

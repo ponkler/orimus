@@ -1,6 +1,4 @@
 using Godot;
-using System.Collections.Generic;
-using System.Linq;
 
 public partial class Main : Node2D
 {
@@ -13,7 +11,6 @@ public partial class Main : Node2D
 	private ColorRect VisLayer;
 
 	private Player Player;
-	private List<Node2D> visSources;
 
 	private GpuParticles2D Particles;
 
@@ -30,13 +27,11 @@ public partial class Main : Node2D
 		Player = GetNode<Player>("World/Player");
 
 		Particles = GetNode<GpuParticles2D>("WorldParticles");
-
-        visSources = GetTree().GetNodesInGroup("VisSource").Select(node => (Node2D)node).ToList();
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
-		Vector2 camTarget = Player.PivotPoint.Lerp(GetGlobalMousePosition(), 0.3f);
+		Vector2 camTarget = Player.PivotPoint.Lerp(GetGlobalMousePosition(), 0.2f);
 		Camera.GlobalPosition = Camera.GlobalPosition.Lerp(camTarget, 0.1f);
 
 		AsciiCamera.GlobalPosition = Camera.GlobalPosition;

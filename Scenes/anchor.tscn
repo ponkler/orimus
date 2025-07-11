@@ -1,0 +1,68 @@
+[gd_scene load_steps=13 format=3 uid="uid://b3n7tar4xnnby"]
+
+[ext_resource type="Script" uid="uid://2kvwrucnwdjt" path="res://Scripts/World/Anchor.cs" id="1_prd0f"]
+[ext_resource type="Texture2D" uid="uid://bhu7mjw2oxxrl" path="res://Sprites/anchor_base.png" id="1_sjlrk"]
+[ext_resource type="Texture2D" uid="uid://cwvfyp0eydnyd" path="res://Sprites/anchor_generator.png" id="2_uqspe"]
+[ext_resource type="Texture2D" uid="uid://b5jbtcdl0hfqp" path="res://Sprites/anchor_cap.png" id="3_oasus"]
+[ext_resource type="PackedScene" uid="uid://c3f52sg2u4kmn" path="res://Scenes/vis_source.tscn" id="4_uqspe"]
+[ext_resource type="Texture2D" uid="uid://6nd1cjnu5vpx" path="res://Sprites/charge_line_b.png" id="6_rgygb"]
+[ext_resource type="Texture2D" uid="uid://3t8y3qisgbwo" path="res://Sprites/charge_line_a.png" id="7_prd0f"]
+[ext_resource type="Shader" uid="uid://b207hysl1twof" path="res://Shaders/charge.gdshader" id="7_s3ve1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_s3ve1"]
+radius = 29.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_prd0f"]
+radius = 360.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_prd0f"]
+shader = ExtResource("7_s3ve1")
+shader_parameter/scroll_speed = -0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jngsh"]
+shader = ExtResource("7_s3ve1")
+shader_parameter/scroll_speed = 1.0
+
+[node name="Anchor" type="StaticBody2D"]
+script = ExtResource("1_prd0f")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_s3ve1")
+
+[node name="ChargeRegion" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChargeRegion"]
+shape = SubResource("CircleShape2D_prd0f")
+
+[node name="Base" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("1_sjlrk")
+
+[node name="Generator" type="Sprite2D" parent="."]
+z_index = 2
+scale = Vector2(2, 2)
+texture = ExtResource("2_uqspe")
+
+[node name="Cap" type="Sprite2D" parent="."]
+z_index = 2
+scale = Vector2(2, 2)
+texture = ExtResource("3_oasus")
+
+[node name="VisSource" parent="." instance=ExtResource("4_uqspe")]
+VisRadius = 360.0
+
+[node name="ChargeLineB" type="Line2D" parent="."]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_prd0f")
+points = PackedVector2Array(0, 0, 0, 0)
+width = 5.0
+texture = ExtResource("6_rgygb")
+texture_mode = 1
+
+[node name="ChargeLineA" type="Line2D" parent="."]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_jngsh")
+points = PackedVector2Array(0, 0, 0, 0)
+width = 5.0
+texture = ExtResource("7_prd0f")
+texture_mode = 1

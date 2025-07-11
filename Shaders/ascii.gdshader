@@ -10,7 +10,7 @@ uniform float char_count = 16.0;
 void fragment() {
     vec2 screen_size = vec2(textureSize(source_texture, 0));
 	vec2 pixel_pos = UV * screen_size;
-	
+
     vec2 cell_pos = floor(pixel_pos / vec2(char_width, char_height)) * vec2(char_width, char_height);
     vec2 center_uv = (cell_pos + vec2(char_width, char_height) * 0.5) / screen_size;
 

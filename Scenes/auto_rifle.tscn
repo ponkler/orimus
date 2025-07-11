@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://0f1f0nhs14ad"]
+
+[ext_resource type="Texture2D" uid="uid://b0dotsxd5unu8" path="res://Sprites/rifle.png" id="1_1rrao"]
+[ext_resource type="Script" uid="uid://cdw2w2sjs5ogm" path="res://Scripts/Items/Weapons/AutoRifle.cs" id="2_e8rm4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3smsa"]
+
+[node name="Autorifle" type="Sprite2D"]
+texture = ExtResource("1_1rrao")
+script = ExtResource("2_e8rm4")
+
+[node name="GunRaycast" type="RayCast2D" parent="."]
+position = Vector2(0, 6)
+
+[node name="TargetBubble" type="Area2D" parent="."]
+position = Vector2(-7, -8)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TargetBubble"]
+shape = SubResource("CircleShape2D_3smsa")

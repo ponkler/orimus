@@ -1,8 +1,10 @@
-[gd_scene load_steps=21 format=3 uid="uid://b7h6nffs7thls"]
+[gd_scene load_steps=23 format=3 uid="uid://b7h6nffs7thls"]
 
 [ext_resource type="Shader" uid="uid://cej5ni3xhgnh1" path="res://Shaders/ascii.gdshader" id="1_jjgbg"]
 [ext_resource type="Script" uid="uid://bmjquw3d72mbw" path="res://Scripts/Main.cs" id="1_jjvhh"]
+[ext_resource type="PackedScene" uid="uid://wgna0xofxdb2" path="res://Scenes/enemy.tscn" id="2_6bp64"]
 [ext_resource type="Texture2D" uid="uid://3kxdyomv1ant" path="res://Sprites/ascii.png" id="2_bo1nx"]
+[ext_resource type="PackedScene" uid="uid://b3n7tar4xnnby" path="res://Scenes/anchor.tscn" id="3_21xkr"]
 [ext_resource type="PackedScene" uid="uid://c8fnhdua6b0hh" path="res://Scenes/player.tscn" id="5_kry3j"]
 [ext_resource type="Shader" uid="uid://bbwc3h7iwy4tq" path="res://Shaders/fogofwar.gdshader" id="6_21xkr"]
 
@@ -13,6 +15,7 @@ glow_normalized = true
 glow_intensity = 1.0
 glow_bloom = 0.1
 glow_blend_mode = 0
+adjustment_enabled = true
 
 [sub_resource type="Gradient" id="Gradient_kry3j"]
 offsets = PackedFloat32Array(0)
@@ -87,6 +90,9 @@ viewport_path = NodePath("VisRenderer/Viewport")
 resource_local_to_scene = true
 shader = ExtResource("6_21xkr")
 shader_parameter/visTexture = SubResource("ViewportTexture_21xkr")
+shader_parameter/wobble_strength = 0.003
+shader_parameter/wobble_frequency = 20.0
+shader_parameter/wobble_speed = 1.5
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_jjvhh")
@@ -94,19 +100,17 @@ script = ExtResource("1_jjvhh")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_kry3j")
 
-[node name="Background" type="ColorRect" parent="."]
-offset_left = -1959.0
-offset_top = -2179.0
-offset_right = 3041.0
-offset_bottom = 2821.0
-color = Color(0.0941176, 0.0666667, 0.101961, 1)
-
 [node name="World" type="Node2D" parent="."]
 
 [node name="Enemies" type="Node2D" parent="World"]
 
+[node name="Enemy" parent="World/Enemies" instance=ExtResource("2_6bp64")]
+position = Vector2(812, 266)
+
 [node name="Player" parent="World" instance=ExtResource("5_kry3j")]
 position = Vector2(563, 311)
+
+[node name="Anchor" parent="World" instance=ExtResource("3_21xkr")]
 
 [node name="WorldParticles" type="GPUParticles2D" parent="."]
 position = Vector2(576, 324)
@@ -189,6 +193,7 @@ texture = SubResource("ViewportTexture_7u77a")
 
 [node name="VisLayer" type="ColorRect" parent="."]
 visibility_layer = 2
+z_index = 5
 material = SubResource("ShaderMaterial_6bp64")
 anchors_preset = 15
 anchor_right = 1.0
@@ -200,7 +205,15 @@ offset_bottom = 972.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(576, 324)
-color = Color(0.14856, 0.1072, 0.16, 1)
+color = Color(0.076, 0.058, 0.08, 1)
 
 [node name="Camera" type="Camera2D" parent="."]
 position_smoothing_speed = 3.0
+
+[node name="Background" type="ColorRect" parent="Camera"]
+z_index = -1
+offset_left = -1959.0
+offset_top = -2179.0
+offset_right = 3041.0
+offset_bottom = 2821.0
+color = Color(0.0941176, 0.0666667, 0.101961, 1)

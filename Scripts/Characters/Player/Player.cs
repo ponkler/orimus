@@ -1,19 +1,41 @@
 using Godot;
+using Godot.Collections;
+
+enum PlayerState
+{
+	IDLE,
+	TURNING,
+	MOVING,
+	BOOSTING,
+	CRAWLING
+}
 
 public partial class Player : CharacterBody2D
 {
-	private Node2D LowerPivot;
+	private Dictionary<string, string> weaponPaths = new Dictionary<string, string>
+	{
+		{ "autorifle", "res://Scripts/Items/Weapons/AutoRifle.cs" },
+		{ "disperser", "res://Scripts/Items/Weapons/Disperser.cs" },
+		{ "siphon_core", "res://Scripts/Items/Weapons/SiphonCore.cs" }
+	};
+
+    private Node2D LowerPivot;
 	private AnimatedSprite2D LeftTrack;
 	private AnimatedSprite2D RightTrack;
 
-	private TextureRect Body;
-	private TextureRect LeftHand;
-	private TextureRect RightHand;
+	private Sprite2D Body;
+	private Node2D LeftHand;
+	private Node2D RightHand;
 
 	private RayCast2D GunRaycast;
 	private Area2D TargetBubble;
 
 	private Vector2 newVel = Vector2.Zero;
+
+	private float CurrentSpeed = 0.0f;
+	const float MoveSpeed = 100.0f;
+	const float BoostSpeed = 175.0f;
+	const float CrawlSpeed = 40.0f;
 
 	public float LookAngle;
 	public Vector2 PivotPoint;
@@ -23,20 +45,33 @@ public partial class Player : CharacterBody2D
 
 	private Node2D EnergyMeters;
 
+	private VisSource VisSource;
+
+	private PlayerState State = PlayerState.IDLE;
+
+	private Weapon Weapon;
+	private Tool Tool;
+
+	private float FireDelta = 0.0f;
+
 	public override void _Ready()
 	{
 		LowerPivot = GetNode<Node2D>("Lower");
 		LeftTrack = LowerPivot.GetNode<AnimatedSprite2D>("LeftTrack");
 		RightTrack = LowerPivot.GetNode<AnimatedSprite2D>("RightTrack");
 
-		Body = GetNode<TextureRect>("Body");
-		LeftHand = Body.GetNode<TextureRect>("Left");
-		RightHand = Body.GetNode<TextureRect>("Right");
+		Body = GetNode<Sprite2D>("Body");
+		LeftHand = Body.GetNode<Node2D>("Left");
+		RightHand = Body.GetNode<Node2D>("Right");
 
-		GunRaycast = LeftHand.GetNode<RayCast2D>("GunRaycast");
-		TargetBubble = LeftHand.GetNode<Area2D>("TargetBubble");
+		Weapon = LeftHand.GetNode<Weapon>("Autorifle");
+
+		GunRaycast = Weapon.GetNode<RayCast2D>("GunRaycast");
+		TargetBubble = Weapon.GetNode<Area2D>("TargetBubble");
 
 		EnergyMeters = GetNode<Node2D>("EnergyMeters");
+
+		VisSource = GetNode<VisSource>("VisSource");
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -44,17 +79,64 @@ public partial class Player : CharacterBody2D
 		float turnAxis = Input.GetAxis("left", "right");
 		float moveAxis = Input.GetAxis("backward", "forward");
 
-		PivotPoint = GlobalPosition + Body.PivotOffset + Body.Position;
+		PivotPoint = GlobalPosition + Body.Position;
 
 		Vector2 moveTurnVector = new Vector2(turnAxis, moveAxis);
 
-		SetVelocity(moveAxis, delta);
+		State = PlayerState.IDLE;
+		if (turnAxis != 0.0) { State = PlayerState.TURNING; }
+		if (moveAxis != 0.0) { State = PlayerState.MOVING; }
+		if (State == PlayerState.MOVING && Input.IsActionPressed("sprint")) { State = PlayerState.BOOSTING; }
+        if (State == PlayerState.MOVING && CurrentEnergy == 0.0f) { State = PlayerState.CRAWLING; }
+
+        SetVelocity(moveAxis, delta);
 		RotateLower(turnAxis, delta);
 		RotateUpper();
 		Animate(moveTurnVector);
 		MoveAndSlide();
-		UpdateEnergyMeters();
+        UpdateEnergyMeters();
+        DrainEnergy(delta);
 		Aim();
+
+        Weapon.ClearEffects();
+
+        if (Input.IsActionPressed("primary"))
+		{
+			if (FireDelta > Weapon.FireDelay)
+			{
+                Weapon.Fire(GunRaycast.Position, GunRaycast.TargetPosition);
+				FireDelta = 0.0f;
+            }
+		}
+
+        FireDelta += (float)delta;
+    }
+
+	public void DrainEnergy(double delta)
+	{
+		float amount = 0.0f;
+
+		switch (State) 
+		{
+			case PlayerState.IDLE:
+                amount = 1.0f;
+                break;
+			case PlayerState.TURNING:
+				amount = 2.0f;
+				break;
+			case PlayerState.MOVING:
+                amount = 4.0f;
+                break;
+			case PlayerState.BOOSTING:
+                amount = 20.0f;
+                break;
+			case PlayerState.CRAWLING:
+                amount = 0.0f;
+                break;
+		}
+
+		CurrentEnergy -= amount * (float)delta;
+		CurrentEnergy = Mathf.Clamp(CurrentEnergy, 0.0f, MaxEnergy);
 	}
 
 	// There has GOT to be a better way to handle this
@@ -129,7 +211,9 @@ public partial class Player : CharacterBody2D
 
 	public void SetVelocity(float axis, double delta)
 	{
-		newVel = newVel.Lerp(Vector2.Down * 100.0f, 10.0f * (float)delta);
+        CurrentSpeed = CurrentEnergy > 0.0f ? Input.IsActionPressed("sprint") ? BoostSpeed : MoveSpeed : CrawlSpeed;
+
+        newVel = newVel.Lerp(Vector2.Down * CurrentSpeed, 10.0f * (float)delta);
 		Velocity = Vector2.Down.Rotated(LowerPivot.Rotation) * newVel.Length() * axis;
 	}
 
@@ -178,11 +262,10 @@ public partial class Player : CharacterBody2D
 
 	public void UpdateEnergyMeters()
 	{
-		GD.Print(Mathf.Ceil(CurrentEnergy / (MaxEnergy / 10.0f)));
 		foreach (Sprite2D meter in EnergyMeters.GetChildren())
 		{
-			if (CurrentEnergy == MaxEnergy) 
-			{ 
+			if (CurrentEnergy.Equals(MaxEnergy)) 
+			{
 				meter.Frame = 11;
 				continue;
 			}
