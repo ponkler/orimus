@@ -1,15 +1,19 @@
-[gd_scene load_steps=17 format=3 uid="uid://c8fnhdua6b0hh"]
+[gd_scene load_steps=21 format=3 uid="uid://c8fnhdua6b0hh"]
 
 [ext_resource type="Script" uid="uid://b1say0homcn53" path="res://Scripts/Characters/Player/Player.cs" id="1_6t5aa"]
 [ext_resource type="Texture2D" uid="uid://d1ltwd8gct1x8" path="res://Sprites/tracks_backward.png" id="2_3smsa"]
 [ext_resource type="PackedScene" uid="uid://c3f52sg2u4kmn" path="res://Scenes/vis_source.tscn" id="2_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://db5s3mbxo3c12" path="res://Sprites/body.png" id="2_fkybt"]
 [ext_resource type="Texture2D" uid="uid://jabjni7bhw0a" path="res://Sprites/tracks_forward.png" id="3_3smsa"]
-[ext_resource type="PackedScene" uid="uid://0f1f0nhs14ad" path="res://Scenes/auto_rifle.tscn" id="6_gymyn"]
+[ext_resource type="PackedScene" uid="uid://0f1f0nhs14ad" path="res://Scenes/riddle.tscn" id="6_gymyn"]
+[ext_resource type="PackedScene" uid="uid://c2w1p2uj1uhx4" path="res://Scenes/matter.tscn" id="6_pu2lt"]
+[ext_resource type="PackedScene" uid="uid://bajy6betroy6c" path="res://Scenes/siphon.tscn" id="7_pu2lt"]
+[ext_resource type="PackedScene" uid="uid://v06c34iix1v5" path="res://Scenes/lancet.tscn" id="8_7dp3o"]
 [ext_resource type="Texture2D" uid="uid://ckmdod7iajf54" path="res://Sprites/MeterStates/meter_left_sheet.png" id="8_gymyn"]
 [ext_resource type="Texture2D" uid="uid://cd3ohc2lhe3t1" path="res://Sprites/MeterStates/meter_top_sheet.png" id="9_pu2lt"]
 [ext_resource type="Texture2D" uid="uid://cnwgkn6anp1tf" path="res://Sprites/MeterStates/meter_right_sheet.png" id="10_ukyrk"]
 [ext_resource type="Texture2D" uid="uid://buk7o40kc6l7w" path="res://Sprites/MeterStates/meter_bottom_sheet.png" id="11_7dp3o"]
+[ext_resource type="Texture2D" uid="uid://3lrbltvtio73" path="res://Sprites/compass.png" id="14_7dp3o"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f1ek2"]
 atlas = ExtResource("2_3smsa")
@@ -60,7 +64,6 @@ z_index = 1
 script = ExtResource("1_6t5aa")
 
 [node name="Lower" type="Node2D" parent="."]
-position = Vector2(13, 14)
 
 [node name="LeftTrack" type="AnimatedSprite2D" parent="Lower"]
 position = Vector2(4, -14)
@@ -75,7 +78,7 @@ animation = &"forward"
 centered = false
 
 [node name="Body" type="Sprite2D" parent="."]
-position = Vector2(13, 13)
+position = Vector2(0, -1)
 texture = ExtResource("2_fkybt")
 
 [node name="Right" type="Node2D" parent="Body"]
@@ -84,49 +87,79 @@ position = Vector2(-9, 4)
 [node name="Left" type="Node2D" parent="Body"]
 position = Vector2(5, 4)
 
-[node name="Autorifle" parent="Body/Left" instance=ExtResource("6_gymyn")]
+[node name="Riddle" parent="Body/Left" instance=ExtResource("6_gymyn")]
+visible = false
 position = Vector2(2, 5)
 
+[node name="Matter" parent="Body/Left" instance=ExtResource("6_pu2lt")]
+position = Vector2(2.5, 4)
+
+[node name="Siphon" parent="Body/Left" instance=ExtResource("7_pu2lt")]
+visible = false
+position = Vector2(1.5, 2)
+
+[node name="Lancet" parent="Body/Left" instance=ExtResource("8_7dp3o")]
+visible = false
+position = Vector2(0, 9)
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(13, 13)
+position = Vector2(0, -1)
 shape = SubResource("CircleShape2D_cvnsp")
 
 [node name="VisSource" parent="." instance=ExtResource("2_cvnsp")]
 light_mask = 2
 visibility_layer = 2
-position = Vector2(13, 13)
-VisRadius = 48.0
-HasArc = true
-ArcWidth = 60.0
-ArcRadius = 196.0
+position = Vector2(0, -1)
 
 [node name="EnergyMeters" type="Node2D" parent="."]
 modulate = Color(1, 1, 1, 0.6)
+z_index = 6
+position = Vector2(0, -1)
 
 [node name="Left" type="Sprite2D" parent="EnergyMeters"]
 visible = false
-position = Vector2(-18, 13)
+position = Vector2(-31, 0)
 texture = ExtResource("8_gymyn")
 hframes = 12
 frame = 11
+region_enabled = true
+region_rect = Rect2(0, 0, 144, 36)
+region_filter_clip_enabled = true
 
 [node name="Top" type="Sprite2D" parent="EnergyMeters"]
 visible = false
-position = Vector2(13, -18)
+position = Vector2(0, -31)
 texture = ExtResource("9_pu2lt")
 vframes = 12
 frame = 11
+region_enabled = true
+region_rect = Rect2(0, 0, 36, 144)
+region_filter_clip_enabled = true
 
 [node name="Right" type="Sprite2D" parent="EnergyMeters"]
 visible = false
-position = Vector2(44, 13)
+position = Vector2(31, 0)
 texture = ExtResource("10_ukyrk")
 hframes = 12
 frame = 11
+region_enabled = true
+region_rect = Rect2(0, 0, 144, 36)
+region_filter_clip_enabled = true
 
 [node name="Bottom" type="Sprite2D" parent="EnergyMeters"]
 visible = false
-position = Vector2(13, 44)
+position = Vector2(0, 31)
 texture = ExtResource("11_7dp3o")
 vframes = 12
 frame = 11
+region_enabled = true
+region_rect = Rect2(0, 0, 36, 144)
+region_filter_clip_enabled = true
+
+[node name="AnchorCompass" type="Node2D" parent="."]
+z_index = 10
+position = Vector2(0, -1)
+
+[node name="Arrow" type="Sprite2D" parent="AnchorCompass"]
+position = Vector2(0, -192)
+texture = ExtResource("14_7dp3o")

@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://v06c34iix1v5"]
+
+[ext_resource type="Texture2D" uid="uid://cqlsocijktqmn" path="res://Sprites/lancet.png" id="1_jjsuc"]
+[ext_resource type="Script" uid="uid://5h1hh53hdrn8" path="res://Scripts/Items/Weapons/Lancet.cs" id="2_c7ait"]
+
+[node name="Lancet" type="Sprite2D"]
+texture = ExtResource("1_jjsuc")
+script = ExtResource("2_c7ait")
+
+[node name="GunRaycast" type="RayCast2D" parent="."]
+position = Vector2(-5, -13)
+target_position = Vector2(0, 1920)
+collision_mask = 2
+
+[node name="BulletOrigin" type="Node2D" parent="."]
+position = Vector2(2, 9)

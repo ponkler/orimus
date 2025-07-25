@@ -9,6 +9,8 @@ public partial class Anchor : StaticBody2D
     private Line2D ChargeLineA;
     private Line2D ChargeLineB;
 
+    private VisSource VisSource;
+
     public override void _Ready()
     {
         Generator = GetNode<Sprite2D>("Generator");
@@ -16,6 +18,9 @@ public partial class Anchor : StaticBody2D
 
         ChargeLineA = GetNode<Line2D>("ChargeLineA");
         ChargeLineB = GetNode<Line2D>("ChargeLineB");
+
+        VisSource = GetNode<VisSource>("VisSource");
+        VisSource.Init("res://Sprites/VisMasks/AnchorMask.png", Vector2.Zero);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -48,5 +53,7 @@ public partial class Anchor : StaticBody2D
             ChargeLineA.SetPointPosition(1, Vector2.Zero);
             ChargeLineB.SetPointPosition(1, Vector2.Zero);
         }
+
+        VisSource.VisShape.GlobalPosition = GlobalPosition;
     }
 }

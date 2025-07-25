@@ -1,32 +1,65 @@
-[gd_scene load_steps=4 format=3 uid="uid://dvud42fvubsdj"]
+[gd_scene load_steps=7 format=3 uid="uid://dvud42fvubsdj"]
 
 [ext_resource type="Script" uid="uid://dohjnw04y35yu" path="res://Scripts/Characters/Enemy/EnemyVisual.cs" id="1_kqxdc"]
 
+[sub_resource type="Gradient" id="Gradient_kqxdc"]
+offsets = PackedFloat32Array(0, 0.0625, 0.6875)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+metadata/_snap_enabled = true
+metadata/_snap_count = 16
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_vnmyf"]
+gradient = SubResource("Gradient_kqxdc")
+width = 4
+height = 4
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Curve" id="Curve_kqxdc"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
 [sub_resource type="Gradient" id="Gradient_xmq24"]
-offsets = PackedFloat32Array(0, 0.25, 0.6875)
+offsets = PackedFloat32Array(0, 0.5625, 0.6875)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
 metadata/_snap_enabled = true
 metadata/_snap_count = 16
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_kqxdc"]
 gradient = SubResource("Gradient_xmq24")
-width = 128
-height = 128
+width = 8
+height = 8
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 1)
 
 [node name="EnemyVisual" type="Node2D"]
+modulate = Color(0, 1, 1, 1)
 light_mask = 512
 visibility_layer = 512
 script = ExtResource("1_kqxdc")
 
-[node name="Gradient" type="TextureRect" parent="."]
-modulate = Color(0, 0.933333, 1, 1)
+[node name="Trail" type="CPUParticles2D" parent="."]
+modulate = Color(0.784314, 0.784314, 0.784314, 1)
 light_mask = 512
 visibility_layer = 512
-offset_left = -64.0
-offset_top = -64.0
-offset_right = 64.0
-offset_bottom = 64.0
+amount = 64
+texture = SubResource("GradientTexture2D_vnmyf")
+lifetime = 0.6
+gravity = Vector2(0, 0)
+scale_amount_curve = SubResource("Curve_kqxdc")
+
+[node name="Gradient" type="TextureRect" parent="."]
+light_mask = 512
+visibility_layer = 512
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(4, 4)
 texture = SubResource("GradientTexture2D_kqxdc")

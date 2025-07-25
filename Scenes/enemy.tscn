@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://wgna0xofxdb2"]
+[gd_scene load_steps=5 format=3 uid="uid://wgna0xofxdb2"]
 
 [ext_resource type="Script" uid="uid://cu3esbj32ctpn" path="res://Scripts/Characters/Enemy/Enemy.cs" id="1_hghv2"]
 [ext_resource type="PackedScene" uid="uid://c3f52sg2u4kmn" path="res://Scenes/vis_source.tscn" id="2_1f0kj"]
@@ -6,13 +6,25 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_jjvhh"]
 radius = 11.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_1f0kj"]
+radius = 960.0
+
 [node name="Enemy" type="CharacterBody2D"]
+light_mask = 3
+visibility_layer = 3
+collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_hghv2")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Collider" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_jjvhh")
 
 [node name="VisSource" parent="." instance=ExtResource("2_1f0kj")]
 light_mask = 2
 visibility_layer = 2
 VisRadius = 64.0
+
+[node name="Sight" type="Area2D" parent="."]
+
+[node name="Shape" type="CollisionShape2D" parent="Sight"]
+shape = SubResource("CircleShape2D_1f0kj")

@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://0f1f0nhs14ad"]
+
+[ext_resource type="Texture2D" uid="uid://b0dotsxd5unu8" path="res://Sprites/rifle.png" id="1_cmysd"]
+[ext_resource type="Script" uid="uid://dg1fq8alibths" path="res://Scripts/Items/Weapons/Riddle.cs" id="2_5nybo"]
+
+[node name="Riddle" type="Sprite2D"]
+texture = ExtResource("1_cmysd")
+offset = Vector2(0, 0.5)
+script = ExtResource("2_5nybo")
+
+[node name="BulletOrigin" type="Node2D" parent="."]
+position = Vector2(0, 6)
+
+[node name="GunRaycast" type="RayCast2D" parent="."]
+position = Vector2(-7, -9)
+target_position = Vector2(0, 960)
+collision_mask = 2

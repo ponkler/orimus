@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://c2w1p2uj1uhx4"]
+
+[ext_resource type="Texture2D" uid="uid://b8dfyuuedxgjc" path="res://Sprites/shotgun.png" id="1_qyt7s"]
+[ext_resource type="Script" uid="uid://mojcpte8ywty" path="res://Scripts/Items/Weapons/Matter.cs" id="2_hkeec"]
+
+[node name="Matter" type="Sprite2D"]
+texture = ExtResource("1_qyt7s")
+script = ExtResource("2_hkeec")
+
+[node name="Spray" type="CPUParticles2D" parent="."]
+position = Vector2(0, 6)
+emitting = false
+amount = 512
+lifetime = 0.22
+one_shot = true
+speed_scale = 2.0
+explosiveness = 1.0
+local_coords = true
+direction = Vector2(0, 1)
+gravity = Vector2(0, 0)
+initial_velocity_min = 900.0
+initial_velocity_max = 900.0
+scale_amount_max = 2.0
+color = Color(0, 1, 1, 1)
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="Shape" type="CollisionPolygon2D" parent="Hurtbox"]
+position = Vector2(0, 5)
+polygon = PackedVector2Array(-136, 135, -96, 166, -50, 185, 0, 192, 50, 185, 96, 166, 136, 135, 0, 0)

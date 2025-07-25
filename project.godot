@@ -29,6 +29,7 @@ project/assembly_name="Orimus"
 VisSource="Objects that create a visibility radius"
 EnemyVisuals="Accessor for the enemy visual container in the ASCII render viewport"
 VisShapes="Group for all VisSource shapes"
+Anchors="Used to access all charge anchors in the scene"
 
 [input]
 
@@ -86,5 +87,3 @@ common/physics_interpolation=true
 
 textures/canvas_textures/default_texture_filter=0
 textures/default_filters/use_nearest_mipmap_filter=true
-2d/snap/snap_2d_transforms_to_pixel=true
-2d/snap/snap_2d_vertices_to_pixel=true

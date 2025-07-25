@@ -1,10 +1,10 @@
-[gd_scene load_steps=23 format=3 uid="uid://b7h6nffs7thls"]
+[gd_scene load_steps=24 format=3 uid="uid://b7h6nffs7thls"]
 
 [ext_resource type="Shader" uid="uid://cej5ni3xhgnh1" path="res://Shaders/ascii.gdshader" id="1_jjgbg"]
 [ext_resource type="Script" uid="uid://bmjquw3d72mbw" path="res://Scripts/Main.cs" id="1_jjvhh"]
-[ext_resource type="PackedScene" uid="uid://wgna0xofxdb2" path="res://Scenes/enemy.tscn" id="2_6bp64"]
 [ext_resource type="Texture2D" uid="uid://3kxdyomv1ant" path="res://Sprites/ascii.png" id="2_bo1nx"]
 [ext_resource type="PackedScene" uid="uid://b3n7tar4xnnby" path="res://Scenes/anchor.tscn" id="3_21xkr"]
+[ext_resource type="PackedScene" uid="uid://b8s84piuxh5gu" path="res://Scenes/haven.tscn" id="4_6bp64"]
 [ext_resource type="PackedScene" uid="uid://c8fnhdua6b0hh" path="res://Scenes/player.tscn" id="5_kry3j"]
 [ext_resource type="Shader" uid="uid://bbwc3h7iwy4tq" path="res://Shaders/fogofwar.gdshader" id="6_21xkr"]
 
@@ -68,6 +68,9 @@ hue_variation_max = 0.15
 hue_variation_curve = SubResource("CurveTexture_21xkr")
 turbulence_noise_strength = 0.1
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_21xkr"]
+light_mode = 2
+
 [sub_resource type="ViewportTexture" id="ViewportTexture_bo1nx"]
 viewport_path = NodePath("AsciiRenderer/Viewport")
 
@@ -79,6 +82,7 @@ shader_parameter/ascii_font = ExtResource("2_bo1nx")
 shader_parameter/char_width = 6.0
 shader_parameter/char_height = 8.0
 shader_parameter/char_count = 16.0
+shader_parameter/zoom = 1.0
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_7u77a"]
 viewport_path = NodePath("AsciiRenderer/Viewport")
@@ -90,9 +94,9 @@ viewport_path = NodePath("VisRenderer/Viewport")
 resource_local_to_scene = true
 shader = ExtResource("6_21xkr")
 shader_parameter/visTexture = SubResource("ViewportTexture_21xkr")
-shader_parameter/wobble_strength = 0.003
-shader_parameter/wobble_frequency = 20.0
-shader_parameter/wobble_speed = 1.5
+shader_parameter/wobble_strength = 0.001
+shader_parameter/wobble_frequency = 100.0
+shader_parameter/wobble_speed = 1.0
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_jjvhh")
@@ -104,13 +108,17 @@ environment = SubResource("Environment_kry3j")
 
 [node name="Enemies" type="Node2D" parent="World"]
 
-[node name="Enemy" parent="World/Enemies" instance=ExtResource("2_6bp64")]
-position = Vector2(812, 266)
-
 [node name="Player" parent="World" instance=ExtResource("5_kry3j")]
 position = Vector2(563, 311)
 
 [node name="Anchor" parent="World" instance=ExtResource("3_21xkr")]
+position = Vector2(-266, 696)
+
+[node name="Anchor2" parent="World" instance=ExtResource("3_21xkr")]
+position = Vector2(1700, 1104)
+
+[node name="Haven" parent="World" instance=ExtResource("4_6bp64")]
+z_index = 4
 
 [node name="WorldParticles" type="GPUParticles2D" parent="."]
 position = Vector2(576, 324)
@@ -129,14 +137,11 @@ offset_right = 1152.0
 offset_bottom = 648.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(576, 324)
 
 [node name="Viewport" type="SubViewport" parent="AsciiRenderer"]
-disable_3d = true
 own_world_3d = true
 transparent_bg = true
 handle_input_locally = false
-canvas_item_default_texture_filter = 0
 canvas_cull_mask = 4293919232
 size = Vector2i(1152, 648)
 render_target_update_mode = 4
@@ -164,21 +169,23 @@ grow_vertical = 2
 own_world_3d = true
 transparent_bg = true
 handle_input_locally = false
-canvas_item_default_texture_filter = 0
 canvas_cull_mask = 4293918722
 size = Vector2i(1152, 648)
 render_target_update_mode = 4
 
 [node name="VisCamera" type="Camera2D" parent="VisRenderer/Viewport"]
+light_mask = 3
+
+[node name="Occluders" type="Node2D" parent="VisRenderer/Viewport"]
 
 [node name="VisShapes" type="Node2D" parent="VisRenderer/Viewport" groups=["VisShapes"]]
 light_mask = 2
 visibility_layer = 2
 
-[node name="AsciiLayer" type="TextureRect" parent="."]
-light_mask = 512
-visibility_layer = 512
-material = SubResource("ShaderMaterial_jjgbg")
+[node name="LightMask" type="ColorRect" parent="VisRenderer/Viewport"]
+light_mask = 3
+visibility_layer = 3
+material = SubResource("CanvasItemMaterial_21xkr")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -188,20 +195,29 @@ offset_right = 576.0
 offset_bottom = 324.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(576, 324)
+
+[node name="AsciiLayer" type="TextureRect" parent="."]
+light_mask = 512
+visibility_layer = 512
+material = SubResource("ShaderMaterial_jjgbg")
+offset_left = -576.0
+offset_top = -324.0
+offset_right = 576.0
+offset_bottom = 324.0
 texture = SubResource("ViewportTexture_7u77a")
 
 [node name="VisLayer" type="ColorRect" parent="."]
+light_mask = 3
 visibility_layer = 2
 z_index = 5
 material = SubResource("ShaderMaterial_6bp64")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -576.0
-offset_top = -324.0
-offset_right = 1728.0
-offset_bottom = 972.0
+offset_left = -1152.0
+offset_top = -648.0
+offset_right = 1152.0
+offset_bottom = 648.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(576, 324)

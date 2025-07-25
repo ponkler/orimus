@@ -1,5 +1,6 @@
 using Godot;
-using Godot.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 enum PlayerState
 {
@@ -12,12 +13,18 @@ enum PlayerState
 
 public partial class Player : CharacterBody2D
 {
-	private Dictionary<string, string> weaponPaths = new Dictionary<string, string>
+	[Signal]
+	public delegate void PlayerChangedWeaponEventHandler(Weapon weapon);
+
+	private Dictionary<string, PackedScene> weaponScenes = new Dictionary<string, PackedScene>
 	{
-		{ "autorifle", "res://Scripts/Items/Weapons/AutoRifle.cs" },
-		{ "disperser", "res://Scripts/Items/Weapons/Disperser.cs" },
-		{ "siphon_core", "res://Scripts/Items/Weapons/SiphonCore.cs" }
+		{ "riddle", ResourceLoader.Load<PackedScene>("res://Scenes/riddle.tscn") },
+		{ "matter", ResourceLoader.Load<PackedScene>("res://Scenes/matter.tscn") },
+		{ "siphon", ResourceLoader.Load<PackedScene>("res://Scenes/siphon.tscn") },
+		{ "lancet", ResourceLoader.Load<PackedScene>("res://Scenes/lancet.tscn") }
 	};
+
+	public Dictionary<string, Image> weaponVisImages = new Dictionary<string, Image>();
 
     private Node2D LowerPivot;
 	private AnimatedSprite2D LeftTrack;
@@ -27,12 +34,12 @@ public partial class Player : CharacterBody2D
 	private Node2D LeftHand;
 	private Node2D RightHand;
 
-	private RayCast2D GunRaycast;
-	private Area2D TargetBubble;
+    private Node2D VisGroup;
 
-	private Vector2 newVel = Vector2.Zero;
+    private Vector2 newVel = Vector2.Zero;
 
 	private float CurrentSpeed = 0.0f;
+
 	const float MoveSpeed = 100.0f;
 	const float BoostSpeed = 175.0f;
 	const float CrawlSpeed = 40.0f;
@@ -49,14 +56,21 @@ public partial class Player : CharacterBody2D
 
 	private PlayerState State = PlayerState.IDLE;
 
+	private Anchor NearestAnchor;
+	private Node2D AnchorCompass;
+
 	private Weapon Weapon;
 	private Tool Tool;
 
-	private float FireDelta = 0.0f;
+	private float FireDelta = 1000.0f;
+
+	private List<PointLight2D> visLights = new List<PointLight2D>();
 
 	public override void _Ready()
 	{
-		LowerPivot = GetNode<Node2D>("Lower");
+        VisGroup = (Node2D)GetTree().GetFirstNodeInGroup("VisShapes");
+
+        LowerPivot = GetNode<Node2D>("Lower");
 		LeftTrack = LowerPivot.GetNode<AnimatedSprite2D>("LeftTrack");
 		RightTrack = LowerPivot.GetNode<AnimatedSprite2D>("RightTrack");
 
@@ -64,14 +78,14 @@ public partial class Player : CharacterBody2D
 		LeftHand = Body.GetNode<Node2D>("Left");
 		RightHand = Body.GetNode<Node2D>("Right");
 
-		Weapon = LeftHand.GetNode<Weapon>("Autorifle");
-
-		GunRaycast = Weapon.GetNode<RayCast2D>("GunRaycast");
-		TargetBubble = Weapon.GetNode<Area2D>("TargetBubble");
+		Weapon = LeftHand.GetNode<Weapon>("Matter");
 
 		EnergyMeters = GetNode<Node2D>("EnergyMeters");
 
 		VisSource = GetNode<VisSource>("VisSource");
+		VisSource.Init(Weapon.VisPath, Weapon.VisOffset);
+
+		AnchorCompass = GetNode<Node2D>("AnchorCompass");
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -84,8 +98,10 @@ public partial class Player : CharacterBody2D
 		Vector2 moveTurnVector = new Vector2(turnAxis, moveAxis);
 
 		State = PlayerState.IDLE;
+
 		if (turnAxis != 0.0) { State = PlayerState.TURNING; }
 		if (moveAxis != 0.0) { State = PlayerState.MOVING; }
+
 		if (State == PlayerState.MOVING && Input.IsActionPressed("sprint")) { State = PlayerState.BOOSTING; }
         if (State == PlayerState.MOVING && CurrentEnergy == 0.0f) { State = PlayerState.CRAWLING; }
 
@@ -96,7 +112,14 @@ public partial class Player : CharacterBody2D
 		MoveAndSlide();
         UpdateEnergyMeters();
         DrainEnergy(delta);
-		Aim();
+
+		VisSource.AimAngle = LookAngle;
+
+        if (VisSource.VisShape != null)
+        {
+            VisSource.VisShape.GlobalPosition = GlobalPosition;
+            VisSource.VisShape.AimAngle = VisSource.AimAngle + float.Pi / 2;
+        }
 
         Weapon.ClearEffects();
 
@@ -104,12 +127,17 @@ public partial class Player : CharacterBody2D
 		{
 			if (FireDelta > Weapon.FireDelay)
 			{
-                Weapon.Fire(GunRaycast.Position, GunRaycast.TargetPosition);
-				FireDelta = 0.0f;
+				if (CurrentEnergy - Weapon.FireCost > 0.0f)
+				{
+					CurrentEnergy -= Weapon.FireCost;
+                    Weapon.Fire();
+                    FireDelta = 0.0f;
+                }
             }
 		}
 
         FireDelta += (float)delta;
+		UpdateNearestAnchor();
     }
 
 	public void DrainEnergy(double delta)
@@ -274,12 +302,27 @@ public partial class Player : CharacterBody2D
 		}
 	}
 
-	public void Aim()
+	public void UpdateNearestAnchor()
 	{
-		Vector2 mousePos = GetGlobalMousePosition();
+		float distToNearestAnchor = float.PositiveInfinity;
 
-		GunRaycast.TargetPosition = GunRaycast.ToLocal(mousePos);
+		if (NearestAnchor != null)
+		{
+			distToNearestAnchor = GlobalPosition.DistanceTo(NearestAnchor.GlobalPosition);
+		}
 
-		TargetBubble.GlobalPosition = mousePos;
+		foreach (Anchor anchor in GetTree().GetNodesInGroup("Anchors").Select(node => (Anchor)node))
+		{
+			NearestAnchor = GlobalPosition.DistanceTo(anchor.GlobalPosition) < distToNearestAnchor ? anchor : NearestAnchor;
+		}
+
+        AnchorCompass.Rotation = PivotPoint.AngleToPoint(NearestAnchor.GlobalPosition) + Mathf.Pi/2;
+    }
+
+	public void ChangeWeapon(Weapon weapon)
+	{
+		Weapon = weapon;
+		EmitSignal(SignalName.PlayerChangedWeapon, Weapon);
+		EnergyMeters.Scale = new Vector2(1.0f, 1.0f) / Weapon.CameraZoom;
 	}
 }

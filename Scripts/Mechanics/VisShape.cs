@@ -1,39 +1,16 @@
 using Godot;
 
-public partial class VisShape : Node2D
+public partial class VisShape : PointLight2D
 {
-    private float VisRadius = -1.0f;
-    private bool HasArc = false;
-    private float ArcAngle = -1.0f;
-    private float ArcWidth = -1.0f;
-    private float ArcRadius = -1.0f;
+    public float AimAngle = 0.0f;
 
-    public Vector2 startPos = Vector2.Zero;
-    public float aimAngle = -1.0f;
-
-    public VisShape(float visRadius, bool hasArc, float arcAngle, float arcWidth, float arcRadius)
+    public override void _Ready()
     {
-        VisRadius = visRadius;
-        HasArc = hasArc;
-        ArcAngle = arcAngle;
-        ArcWidth = arcWidth;
-        ArcRadius = arcRadius;
+        ShadowEnabled = true;
     }
 
-    public override void _Draw()
+    public override void _PhysicsProcess(double delta)
     {
-        if (HasArc)
-        {
-            float arcWidthRad = Mathf.DegToRad(ArcWidth);
-            float startAngle = aimAngle - (arcWidthRad / 2.0f);
-
-            DrawArc(startPos, ArcRadius, startAngle, startAngle + arcWidthRad, 32, new Color(1.0f, 1.0f, 1.0f, 1.0f), ArcRadius * 2);
-        }
-        DrawCircle(Vector2.Zero, VisRadius, new Color(1.0f, 1.0f, 1.0f, 1.0f));
-    }
-
-    public override void _Process(double delta)
-    {
-        QueueRedraw();
+        Rotation = AimAngle;
     }
 }

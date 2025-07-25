@@ -17,13 +17,13 @@ radius = 360.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_prd0f"]
 shader = ExtResource("7_s3ve1")
-shader_parameter/scroll_speed = -0.5
+shader_parameter/scroll_speed = 5.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jngsh"]
 shader = ExtResource("7_s3ve1")
-shader_parameter/scroll_speed = 1.0
+shader_parameter/scroll_speed = 3.0
 
-[node name="Anchor" type="StaticBody2D"]
+[node name="Anchor" type="StaticBody2D" groups=["Anchors"]]
 script = ExtResource("1_prd0f")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -49,13 +49,11 @@ scale = Vector2(2, 2)
 texture = ExtResource("3_oasus")
 
 [node name="VisSource" parent="." instance=ExtResource("4_uqspe")]
-VisRadius = 360.0
 
 [node name="ChargeLineB" type="Line2D" parent="."]
 texture_repeat = 2
 material = SubResource("ShaderMaterial_prd0f")
 points = PackedVector2Array(0, 0, 0, 0)
-width = 5.0
 texture = ExtResource("6_rgygb")
 texture_mode = 1
 
@@ -63,6 +61,5 @@ texture_mode = 1
 texture_repeat = 2
 material = SubResource("ShaderMaterial_jngsh")
 points = PackedVector2Array(0, 0, 0, 0)
-width = 5.0
 texture = ExtResource("7_prd0f")
 texture_mode = 1

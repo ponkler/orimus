@@ -1,0 +1,130 @@
+[gd_scene load_steps=8 format=3 uid="uid://b8s84piuxh5gu"]
+
+[ext_resource type="Script" uid="uid://d0kb5tqrqfg5d" path="res://Scripts/World/Haven.cs" id="1_qbjut"]
+[ext_resource type="Texture2D" uid="uid://bfs0hl3ch8yp3" path="res://Sprites/haven.png" id="1_qosv4"]
+[ext_resource type="Texture2D" uid="uid://b05umjmlhq217" path="res://Sprites/door.png" id="2_jtu3x"]
+[ext_resource type="PackedScene" uid="uid://c3f52sg2u4kmn" path="res://Scenes/vis_source.tscn" id="3_pl6yh"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qosv4"]
+radius = 30.0666
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pl6yh"]
+size = Vector2(128, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qbjut"]
+size = Vector2(128, 12)
+
+[node name="Haven" type="StaticBody2D"]
+script = ExtResource("1_qbjut")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0, 1, 1, 1)
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_qosv4")
+
+[node name="QuadCollider" type="CollisionPolygon2D" parent="."]
+position = Vector2(-64, -512)
+polygon = PackedVector2Array(0, 48, -64, 48, -64, 320, -368, 320, -368, 448, -400, 448, -416, 432, -416, 288, -400, 272, -320, 272, -304, 288, -304, 304, -208, 304, -208, 288, -192, 272, -112, 272, -112, 224, -96, 208, -80, 208, -80, 112, -96, 112, -112, 96, -112, 16, -96, 0, -16, 0, 0, 16)
+
+[node name="QuadCollider2" type="CollisionPolygon2D" parent="."]
+position = Vector2(64, -512)
+scale = Vector2(-1, 1)
+polygon = PackedVector2Array(0, 48, -64, 48, -64, 320, -368, 320, -368, 448, -400, 448, -416, 432, -416, 288, -400, 272, -320, 272, -304, 288, -304, 304, -208, 304, -208, 288, -192, 272, -112, 272, -112, 224, -96, 208, -80, 208, -80, 112, -96, 112, -112, 96, -112, 16, -96, 0, -16, 0, 0, 16)
+
+[node name="QuadCollider3" type="CollisionPolygon2D" parent="."]
+position = Vector2(-64, 512)
+scale = Vector2(1, -1)
+polygon = PackedVector2Array(0, 48, -64, 48, -64, 320, -368, 320, -368, 448, -400, 448, -416, 432, -416, 288, -400, 272, -320, 272, -304, 288, -304, 304, -208, 304, -208, 288, -192, 272, -112, 272, -112, 224, -96, 208, -80, 208, -80, 112, -96, 112, -112, 96, -112, 16, -96, 0, -16, 0, 0, 16)
+
+[node name="QuadCollider4" type="CollisionPolygon2D" parent="."]
+position = Vector2(64, 512)
+scale = Vector2(-1, -1)
+polygon = PackedVector2Array(0, 48, -64, 48, -64, 320, -368, 320, -368, 448, -400, 448, -416, 432, -416, 288, -400, 272, -320, 272, -304, 288, -304, 304, -208, 304, -208, 288, -192, 272, -112, 272, -112, 224, -96, 208, -80, 208, -80, 112, -96, 112, -112, 96, -112, 16, -96, 0, -16, 0, 0, 16)
+
+[node name="GenCollider" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_qosv4")
+
+[node name="TopDoorTrigger" type="Area2D" parent="."]
+position = Vector2(0, -480)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopDoorTrigger"]
+shape = SubResource("RectangleShape2D_pl6yh")
+
+[node name="TopDoor" type="StaticBody2D" parent="."]
+position = Vector2(0, -480)
+
+[node name="Sprite" type="Sprite2D" parent="TopDoor"]
+texture = ExtResource("2_jtu3x")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopDoor"]
+shape = SubResource("RectangleShape2D_qbjut")
+
+[node name="LeftDoorTrigger" type="Area2D" parent="."]
+position = Vector2(-448, 0)
+rotation = -1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftDoorTrigger"]
+shape = SubResource("RectangleShape2D_pl6yh")
+
+[node name="LeftDoor" type="StaticBody2D" parent="."]
+position = Vector2(-448, 0)
+rotation = -1.5708
+
+[node name="Sprite" type="Sprite2D" parent="LeftDoor"]
+texture = ExtResource("2_jtu3x")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftDoor"]
+shape = SubResource("RectangleShape2D_qbjut")
+
+[node name="BottomDoorTrigger" type="Area2D" parent="."]
+position = Vector2(0, 480)
+rotation = -3.14159
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomDoorTrigger"]
+shape = SubResource("RectangleShape2D_pl6yh")
+
+[node name="BottomDoor" type="StaticBody2D" parent="."]
+visible = false
+position = Vector2(0, 480)
+rotation = -3.14159
+
+[node name="Sprite" type="Sprite2D" parent="BottomDoor"]
+texture = ExtResource("2_jtu3x")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomDoor"]
+shape = SubResource("RectangleShape2D_qbjut")
+disabled = true
+
+[node name="RightDoorTrigger" type="Area2D" parent="."]
+position = Vector2(448, 0)
+rotation = -4.71239
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightDoorTrigger"]
+shape = SubResource("RectangleShape2D_pl6yh")
+
+[node name="RightDoor" type="StaticBody2D" parent="."]
+visible = false
+position = Vector2(448, 0)
+rotation = -4.71239
+
+[node name="Sprite" type="Sprite2D" parent="RightDoor"]
+texture = ExtResource("2_jtu3x")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightDoor"]
+shape = SubResource("RectangleShape2D_qbjut")
+disabled = true
+
+[node name="VisSource" parent="." instance=ExtResource("3_pl6yh")]
+light_mask = 2
+visibility_layer = 2
+
+[node name="ChargeRegion" type="Area2D" parent="."]
+
+[node name="Collider" type="CollisionPolygon2D" parent="ChargeRegion"]
+position = Vector2(-128, 464)
+polygon = PackedVector2Array(0, 0, 256, 0, 256, -273, 560, -272, 560, -656, 256, -656, 256, -928, 0, -928, 0, -656, -304, -656, -304, -272, 0, -272)

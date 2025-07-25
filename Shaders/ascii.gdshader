@@ -7,8 +7,10 @@ uniform float char_width = 6.0;
 uniform float char_height = 8.0;
 uniform float char_count = 16.0;
 
+uniform float zoom = 1.0;
+
 void fragment() {
-    vec2 screen_size = vec2(textureSize(source_texture, 0));
+    vec2 screen_size = vec2(textureSize(source_texture, 0)) / zoom;
 	vec2 pixel_pos = UV * screen_size;
 
     vec2 cell_pos = floor(pixel_pos / vec2(char_width, char_height)) * vec2(char_width, char_height);
